@@ -8,6 +8,11 @@ WORKDIR /service
 
 EXPOSE 8000
 
+RUN apk add --update --no-cache --virtual .tmp-build-deps \
+    gcc libc-dev linux-headers postgresql-dev && \
+    apk add --no-cache postgresql-libs
+
+
 RUN pip install --upgrade pip && \
     pip install -r /temp/requirements.txt
 
