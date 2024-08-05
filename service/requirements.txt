@@ -1,4 +1,4 @@
 Django~=3.2.16
 djangorestframework
 psycopg2
-asgiref
+celery[redis]==5.2.7

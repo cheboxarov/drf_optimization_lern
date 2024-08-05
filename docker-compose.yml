@@ -2,6 +2,7 @@ services:
   web-app:
     build:
       context: ./service
+    container_name: django
     ports:
       - "8000:8000"
     volumes:
@@ -23,3 +24,22 @@ services:
       - POSTGRES_DB=dbname
       - POSTGRES_USER=dbuser
       - POSTGRES_PASSWORD=pass
+
+  redis:
+    image: redis:7.0.5-alpine
+    hostname: redis
+
+
+  worker:
+    build:
+      context: ./service
+    hostname: worker
+    command: celery -A app worker -l info
+    volumes:
+      - ./service:/service
+    links:
+      - redis
+    depends_on:
+      - redis
+    expose:
+      - 6379
