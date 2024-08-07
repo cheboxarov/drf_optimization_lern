@@ -41,5 +41,23 @@ services:
       - redis
     depends_on:
       - redis
-    expose:
-      - 6379
+      - database
+    environment:
+      - DB_HOST=database
+      - DB_NAME=dbname
+      - DB_USER=dbuser
+      - DB_PASS=pass
+
+  flower:
+    build:
+      context: ./service
+    hostname: flower
+    entrypoint: celery
+    command: -A app flower
+    links:
+      - redis
+    depends_on:
+      - redis
+    ports:
+      - "5555:5555"
+
